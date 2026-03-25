@@ -1,0 +1,50 @@
+require('dotenv').config();
+const express = require('express');
+const multer = require('multer');
+const cors = require('cors');
+const cloudinary = require('./cloudinary');
+const pool = require('./db');
+
+const app = express();
+const upload = multer({ dest: 'uploads/' });
+
+app.use(cors());
+app.use(express.json());
+
+// CREATE: Subir a Cloudinary e insertar en MySQL
+app.post('/motos', upload.single('imagen'), async (req, res) => {
+    try {
+        const result = await cloudinary.uploader.upload(req.file.path);
+        const { marca, modelo, cilindrada } = req.body;
+
+        const sql = 'INSERT INTO motos (marca, modelo, cilindrada, imagen_url) VALUES (?, ?, ?, ?)';
+        const [rows] = await pool.query(sql, [marca, modelo, cilindrada, result.secure_url]);
+
+        res.status(201).json({ id: rows.insertId, marca, modelo, cilindrada, imagen_url: result.secure_url });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// READ: Obtener todas
+app.get('/motos', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM motos');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE: Borrar por ID
+app.delete('/motos/:id', async (req, res) => {
+    try {
+        await pool.query('DELETE FROM motos WHERE id = ?', [req.params.id]);
+        res.json({ message: "Moto borrada con éxito de MySQL" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`🚀 API MySQL lista en puerto ${PORT}`));
