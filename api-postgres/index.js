@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors'); // <--- 1. IMPORTA CORS
+const path = require('path'); // Asegúrate de tener este require al principio
 const cloudinary = require('./cloudinary');
 const { Moto } = require('./models');
 
@@ -69,7 +70,13 @@ app.delete('/motos/:id', async (req, res) => {
 
 // Servir archivos estáticos (para que se vea tu index.html y callrestapi.js)
 // Asumiendo que tu index.html está en la raíz de la carpeta api-postgres
+// Esto sirve todos tus archivos (HTML, JS, CSS)
 app.use(express.static(__dirname));
+
+// Esto hace que el link principal cargue tu index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // Cambiamos el puerto para que use el que Render nos asigne
 const PORT = process.env.PORT || 3000;
