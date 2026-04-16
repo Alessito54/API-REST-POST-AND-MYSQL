@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Consumo de REST-API - Motos</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        div {
+            margin-bottom: 5px;
+        }
+
+        label {
+            display: inline-block;
+            width: 80px;
+            font-size: 18px;
+        }
+
+        input {
+            border: 1px solid #767676;
+            padding: 2px;
+        }
+
+        button {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        td {
+            padding: 2px 5px;
+            font-family: "Times New Roman", Times, serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <p>
+        Consumo de REST-API de Motos (por Alessito54)
+    </p>
+
+    <div>
+        <label>Marca </label>
+        <input type="text" id="marca">
+    </div>
+
+    <div>
+        <label>Modelo </label>
+        <input type="text" id="modelo">
+    </div>
+
+    <div>
+        <label>Cilindrada</label>
+        <input type="number" id="cilindrada">
+    </div>
+
+    <div>
+        <label>Imagen</label>
+        <input type="text" id="imagen_url">
+    </div>
+
+    <button onclick="postMoto()">POST moto </button>
+    <button onclick="getMotos()">GET motos </button>
+
+    <div id="resultado">
+        <!-- La tabla se llenará automáticamente con los datos de la API mediante getMotos() -->
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="callrestapi.js"></script>
+
+</body>
+
+</html>

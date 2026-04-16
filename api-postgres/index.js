@@ -67,4 +67,13 @@ app.delete('/motos/:id', async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log('🚀 API Motos lista en puerto 3000'));
+// Servir archivos estáticos (para que se vea tu index.html y callrestapi.js)
+// Asumiendo que tu index.html está en la raíz de la carpeta api-postgres
+app.use(express.static(__dirname));
+
+// Cambiamos el puerto para que use el que Render nos asigne
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 API Motos lista en puerto ${PORT}`);
+});
