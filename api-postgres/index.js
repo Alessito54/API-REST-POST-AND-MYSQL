@@ -68,14 +68,13 @@ app.delete('/motos/:id', async (req, res) => {
     }
 });
 
-// Servir archivos estáticos (para que se vea tu index.html y callrestapi.js)
-// Asumiendo que tu index.html está en la raíz de la carpeta api-postgres
-// Esto sirve todos tus archivos (HTML, JS, CSS)
-app.use(express.static(__dirname));
+// Servir archivos estáticos (para que se vea tu frontend: index.html y callrestapi.js)
+// Asumiendo que tu `index.html` está en `api-postgres/frontend`
+app.use(express.static(path.join(__dirname, 'frontend')));
 
-// Esto hace que el link principal cargue tu index.html
+// Esto hace que el link principal cargue tu frontend/index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
 // Cambiamos el puerto para que use el que Render nos asigne
