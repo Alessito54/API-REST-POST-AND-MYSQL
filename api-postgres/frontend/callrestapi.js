@@ -1,6 +1,6 @@
 // URL de tu API para motos (Asegúrate de cambiarla puerto/ruta correcta)
-var url = "http://localhost:3000/motos/";
-
+// URL de tu API para motos en Render (Ya no es localhost)
+var url = "https://api-rest-post-and-mysql.onrender.com/motos/";
 function postMoto() {
     var moto = {
         marca: $('#marca').val(),
