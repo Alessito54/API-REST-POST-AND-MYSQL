@@ -46,11 +46,18 @@ function getMotoById() {
         $('#marca').val(moto.marca);
         $('#modelo').val(moto.modelo);
         $('#cilindrada').val(moto.cilindrada);
-        // no setear imagen file input
-        // Mostrar imagen si existe
+
+        // Mostrar toda la información de la moto
+        var html = '<div>';
+        html += '<p><strong>ID:</strong> ' + (moto.id || '') + '</p>';
+        html += '<p><strong>Marca:</strong> ' + (moto.marca || '') + '</p>';
+        html += '<p><strong>Modelo:</strong> ' + (moto.modelo || '') + '</p>';
+        html += '<p><strong>Cilindrada:</strong> ' + (moto.cilindrada || '') + '</p>';
         if (moto.imagen_url) {
-            $('#resultado').html('<p>Imagen seleccionada:</p><img src="'+moto.imagen_url+'" style="max-width:200px;"/>');
+            html += '<p><strong>Imagen:</strong></p><img src="' + moto.imagen_url + '" style="max-width:300px;display:block;"/>';
         }
+        html += '</div>';
+        $('#resultado').html(html);
     }).fail(function (error) {
         console.error('Error al obtener moto por ID:', error);
         alert('No se encontró la moto');
@@ -138,7 +145,7 @@ function getMotos() {
     });
 }
 
-// Cargar las motos automáticamente al iniciar la página
+// No cargar todas las motos automáticamente al iniciar la página
 $(document).ready(function () {
-    getMotos();
+    // Intencionalmente vacío: el usuario pedirá listados o buscará por ID
 });
