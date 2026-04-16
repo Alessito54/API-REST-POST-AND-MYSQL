@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8080
 
 # 7. Comando para arrancar la app
-CMD ["npm", "start"]
+CMD ["node", "index.js"]
