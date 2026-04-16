@@ -1,19 +1,24 @@
 // URL de tu API para motos (Asegúrate de cambiarla puerto/ruta correcta)
 // URL de tu API para motos en Render (Ya no es localhost)
 var url = "https://api-rest-post-and-mysql.onrender.com/motos/";
+
 function postMoto() {
-    var moto = {
-        marca: $('#marca').val(),
-        modelo: $('#modelo').val(),
-        cilindrada: $('#cilindrada').val(),
-        imagen_url: $('#imagen_url').val()
-    };
+    var formData = new FormData();
+    formData.append('marca', $('#marca').val());
+    formData.append('modelo', $('#modelo').val());
+    formData.append('cilindrada', $('#cilindrada').val());
+
+    var fileInput = document.getElementById('imagen');
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+        formData.append('imagen', fileInput.files[0]);
+    }
 
     $.ajax({
         url: url,
         type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(moto),
+        data: formData,
+        processData: false,
+        contentType: false,
         success: function (response) {
             console.log('Moto agregada:', response);
             alert("Moto agregada exitosamente!");
@@ -21,10 +26,10 @@ function postMoto() {
             $('#marca').val('');
             $('#modelo').val('');
             $('#cilindrada').val('');
-            $('#imagen_url').val('');
+            $('#imagen').val('');
 
-            // Opcional: Actualizar la tabla después de agregar
-            // getMotos(); 
+            // Actualizar la tabla después de agregar
+            getMotos();
         },
         error: function (error) {
             console.error('Error al hacer POST:', error);
@@ -46,8 +51,12 @@ function getMotos() {
             tableHtml += '<td>' + moto.modelo + '</td>';
             tableHtml += '<td>' + moto.cilindrada + '</td>';
 
-            // Mostramos la url de la imagen (o si prefieres mostrar la imagen como tal puedes cambiarlo a <img src="...">)
-            tableHtml += '<td>' + moto.imagen_url + '</td>';
+            // Mostramos la imagen como miniatura si existe
+            if (moto.imagen_url) {
+                tableHtml += '<td><img src="' + moto.imagen_url + '" alt="imagen" style="max-width:120px;max-height:80px;object-fit:cover;"/></td>';
+            } else {
+                tableHtml += '<td></td>';
+            }
             tableHtml += '</tr>';
         });
 
