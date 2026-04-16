@@ -74,6 +74,14 @@ app.use(express.static(__dirname));
 // Cambiamos el puerto para que use el que Render nos asigne
 const PORT = process.env.PORT || 3000;
 
+// Importa la conexión de tus modelos
+const db = require('./models'); 
+
+// Sincroniza la base de datos (Crea las tablas si no existen)
+db.sequelize.sync({ alter: true })
+  .then(() => console.log("Tablas sincronizadas con Aiven (Postgres)"))
+  .catch(err => console.log(" Error al sincronizar: " + err.message));
+
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 API Motos lista en puerto ${PORT}`);
 });
