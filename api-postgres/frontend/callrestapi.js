@@ -1,5 +1,3 @@
-// URL de tu API para motos (Asegúrate de cambiarla puerto/ruta correcta)
-// URL de tu API para motos en Render (Ya no es localhost)
 var url = "https://api-rest-post-and-mysql.onrender.com/motos/";
 
 function postMoto() {
@@ -22,13 +20,10 @@ function postMoto() {
         success: function (response) {
             console.log('Moto agregada:', response);
             alert("Moto agregada exitosamente!");
-            // Limpiar los campos
             $('#marca').val('');
             $('#modelo').val('');
             $('#cilindrada').val('');
             $('#imagen').val('');
-
-            // Actualizar la tabla después de agregar
             getMotos();
         },
         error: function (error) {
@@ -42,12 +37,9 @@ function getMotoById() {
     var id = $('#motoId').val();
     if (!id) { alert('Ingresa un ID'); return; }
     $.getJSON(url + id, function (moto) {
-        // Prefill form for possible edición
         $('#marca').val(moto.marca);
         $('#modelo').val(moto.modelo);
         $('#cilindrada').val(moto.cilindrada);
-
-        // Mostrar toda la información de la moto
         var html = '<div>';
         html += '<p><strong>ID:</strong> ' + (moto.id || '') + '</p>';
         html += '<p><strong>Marca:</strong> ' + (moto.marca || '') + '</p>';
@@ -145,7 +137,5 @@ function getMotos() {
     });
 }
 
-// No cargar todas las motos automáticamente al iniciar la página
 $(document).ready(function () {
-    // Intencionalmente vacío: el usuario pedirá listados o buscará por ID
 });
