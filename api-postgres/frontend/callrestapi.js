@@ -38,6 +38,74 @@ function postMoto() {
     });
 }
 
+function getMotoById() {
+    var id = $('#motoId').val();
+    if (!id) { alert('Ingresa un ID'); return; }
+    $.getJSON(url + id, function (moto) {
+        // Prefill form for possible edición
+        $('#marca').val(moto.marca);
+        $('#modelo').val(moto.modelo);
+        $('#cilindrada').val(moto.cilindrada);
+        // no setear imagen file input
+        // Mostrar imagen si existe
+        if (moto.imagen_url) {
+            $('#resultado').html('<p>Imagen seleccionada:</p><img src="'+moto.imagen_url+'" style="max-width:200px;"/>');
+        }
+    }).fail(function (error) {
+        console.error('Error al obtener moto por ID:', error);
+        alert('No se encontró la moto');
+    });
+}
+
+function updateMoto() {
+    var id = $('#motoId').val();
+    if (!id) { alert('Ingresa un ID para actualizar'); return; }
+
+    var formData = new FormData();
+    formData.append('marca', $('#marca').val());
+    formData.append('modelo', $('#modelo').val());
+    formData.append('cilindrada', $('#cilindrada').val());
+
+    var fileInput = document.getElementById('imagen');
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+        formData.append('imagen', fileInput.files[0]);
+    }
+
+    $.ajax({
+        url: url + id,
+        type: 'PUT',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            alert('Moto actualizada');
+            getMotos();
+        },
+        error: function (err) {
+            console.error('Error en PUT:', err);
+            alert('Error al actualizar');
+        }
+    });
+}
+
+function deleteMotoById() {
+    var id = $('#motoId').val();
+    if (!id) { alert('Ingresa un ID para borrar'); return; }
+    if (!confirm('Confirmar borrado de moto id=' + id + '?')) return;
+    $.ajax({
+        url: url + id,
+        type: 'DELETE',
+        success: function () {
+            alert('Moto borrada');
+            getMotos();
+        },
+        error: function (err) {
+            console.error('Error en DELETE:', err);
+            alert('Error al borrar');
+        }
+    });
+}
+
 function getMotos() {
     $.getJSON(url, function (data) {
         var tableHtml = '<table>';

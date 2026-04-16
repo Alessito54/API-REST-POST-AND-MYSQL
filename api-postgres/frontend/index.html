@@ -74,8 +74,16 @@
         <input type="file" id="imagen" accept="image/*">
     </div>
 
-    <button onclick="postMoto()">POST moto </button>
-    <button onclick="getMotos()">GET motos </button>
+    <div>
+        <label>ID</label>
+        <input type="number" id="motoId" style="width:120px;">
+        <button onclick="getMotoById()">GET por ID</button>
+        <button onclick="deleteMotoById()">DELETE por ID</button>
+    </div>
+
+    <button onclick="postMoto()">Crear (POST)</button>
+    <button onclick="updateMoto()">Actualizar (PUT)</button>
+    <button onclick="getMotos()">Listar todas (GET)</button>
 
     <div id="resultado">
         <!-- La tabla se llenará automáticamente con los datos de la API mediante getMotos() -->

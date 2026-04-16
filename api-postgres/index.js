@@ -46,11 +46,23 @@ app.get('/motos/:id', async (req, res) => {
 });
 
 // UPDATE: Editar datos de una moto
-app.put('/motos/:id', async (req, res) => {
+// UPDATE: Editar datos de una moto (acepta opcionalmente una nueva imagen)
+app.put('/motos/:id', upload.single('imagen'), async (req, res) => {
     try {
         const moto = await Moto.findByPk(req.params.id);
         if (!moto) return res.status(404).json({ error: "No existe la moto" });
-        
+
+        // Si viene un archivo nuevo, subirlo a Cloudinary y actualizar imagen_url
+        if (req.file) {
+            try {
+                const result = await cloudinary.uploader.upload(req.file.path);
+                req.body.imagen_url = result.secure_url;
+            } catch (uploadErr) {
+                console.error('Error subiendo imagen a Cloudinary:', uploadErr.message);
+                return res.status(500).json({ error: 'Error subiendo imagen' });
+            }
+        }
+
         await moto.update(req.body);
         res.json(moto);
     } catch (error) {
